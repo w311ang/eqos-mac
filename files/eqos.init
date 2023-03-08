@@ -4,13 +4,13 @@
 START=50
 
 parse_device() {
-	local cfg="$1" ip download upload
+	local cfg="$1" mac download upload
 	
-	config_get ip "$cfg" ip
+	config_get mac "$cfg" mac
 	config_get download "$cfg" download
 	config_get upload "$cfg" upload
 	
-	eqos add $ip $download $upload
+	eqos add $mac $download $upload
 }
 
 eqos_start() {
