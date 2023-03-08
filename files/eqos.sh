@@ -35,26 +35,26 @@ case "$1" in
 		start_qos $2 $3
 	;;
 	"add")
-		ip="$2"
+		mac="$2"
 		dl="$3"
 		up="$4"
 		
 		cnt=$(tc class show dev $dev | wc -l)
 		
 		tc class add dev $dev parent 1:1 classid 1:1$cnt htb rate ${dl}mbit ceil ${dl}mbit
-		tc filter add dev $dev parent 1:0 protocol ip u32 match ip dst $ip flowid 1:1$cnt
+		tc filter add dev $dev parent 1:0 protocol ip u32 match mac dst $mac flowid 1:1$cnt
 		
 		tc class add dev ${dev}-ifb parent 1:1 classid 1:1$cnt htb rate ${up}mbit ceil ${up}mbit
-		tc filter add dev ${dev}-ifb parent 1:0 protocol ip u32 match ip src $ip flowid 1:1$cnt
+		tc filter add dev ${dev}-ifb parent 1:0 protocol ip u32 match mac src $mac flowid 1:1$cnt
 	;;
 	*)
 		echo "Usage: $0 <command> [options]"
 		echo "Commands:"
 		echo "  start dl_rate up_rate       #Total bandwidth (Mbit/s)"
 		echo "  stop"
-		echo "  add ip dl_rate up_rate      #Limiting the bandwidth of a single IP (Mbit/s)"
+		echo "  add mac dl_rate up_rate      #Limiting the bandwidth of a single MAC Address (Mbit/s)"
 		echo "Example:"
 		echo "  $0 start 30 20              # Total bandwidth: down 30Mbit/s up 20Mbit/s"
-		echo "  $0 add 192.168.22.12 10 2   # down 10Mbit/s  up 2Mbit/s"
+		echo "  $0 add 00:00:5e:00:53:af 10 2   # down 10Mbit/s  up 2Mbit/s"
 	;;
 esac
