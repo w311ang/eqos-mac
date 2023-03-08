@@ -27,8 +27,8 @@ msgstr "QOS服务"
 msgid "Upload speed (Mbit/s)"
 msgstr "上传速度 (Mbit/s)"
 
-msgid "Speed limit based on IP address"
-msgstr "IP限速"
+msgid "Speed limit based on MAC address"
+msgstr "MAC限速"
 
 msgid "Total bandwidth"
 msgstr "总带宽"
