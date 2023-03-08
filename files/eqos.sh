@@ -52,7 +52,7 @@ case "$1" in
 		echo "Commands:"
 		echo "  start dl_rate up_rate       #Total bandwidth (Mbit/s)"
 		echo "  stop"
-		echo "  add mac dl_rate up_rate      #Limiting the bandwidth of a single MAC Address (Mbit/s)"
+		echo "  add mac dl_rate up_rate      #Limiting the bandwidth of a single MAC address (Mbit/s)"
 		echo "Example:"
 		echo "  $0 start 30 20              # Total bandwidth: down 30Mbit/s up 20Mbit/s"
 		echo "  $0 add 00:00:5e:00:53:af 10 2   # down 10Mbit/s  up 2Mbit/s"
