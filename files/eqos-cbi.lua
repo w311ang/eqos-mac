@@ -14,17 +14,17 @@ dl.datatype = "and(uinteger,min(1))"
 local ul = s:option(Value, "upload", translate("Upload speed (Mbit/s)"), translate("Total bandwidth"))
 ul.datatype = "and(uinteger,min(1))"
 
-s = m:section(TypedSection, "device", translate("Speed limit based on IP address"))
+s = m:section(TypedSection, "device", translate("Speed limit based on MAC address"))
 s.template = "cbi/tblsection"
 s.anonymous = true
 s.addremove = true
 s.sortable  = true
 
-local ip = s:option(Value, "ip", translate("IP address"))
+local mac = s:option(Value, "mac", translate("MAC address"))
 
 ipc.neighbors({family = 4, dev = "br-lan"}, function(n)
 	if n.mac and n.dest then
-		ip:value(n.dest:string(), "%s (%s)" %{ n.dest:string(), n.mac })
+		mac:value(n.mac, "%s (%s)" %{ n.mac, n.dest:string() })
 	end
 end)
 
