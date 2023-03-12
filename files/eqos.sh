@@ -38,14 +38,21 @@ case "$1" in
 		mac="$2"
 		dl="$3"
 		up="$4"
-		
+
+		M1=$(echo "$mac" | cut -d':' -f1)
+		M2=$(echo "$mac" | cut -d':' -f2)
+		M3=$(echo "$mac" | cut -d':' -f3)
+		M4=$(echo "$mac" | cut -d':' -f4)
+		M5=$(echo "$mac" | cut -d':' -f5)
+		M6=$(echo "$mac" | cut -d':' -f6)
+
 		cnt=$(tc class show dev $dev | wc -l)
 		
 		tc class add dev $dev parent 1:1 classid 1:1$cnt htb rate ${dl}mbit ceil ${dl}mbit
-		tc filter add dev $dev parent 1:0 protocol ip u32 match mac dst $mac flowid 1:1$cnt
+		tc filter add dev $dev parent 1:0 protocol ip u32 match u16 0x0800 at -2 match u16 0x$M5$M6 0xffff at -4 match u32 0x$M1$M2$M3$M4 0xffffffff at -8 flowid 1:1$cnt
 		
 		tc class add dev ${dev}-ifb parent 1:1 classid 1:1$cnt htb rate ${up}mbit ceil ${up}mbit
-		tc filter add dev ${dev}-ifb parent 1:0 protocol ip u32 match mac src $mac flowid 1:1$cnt
+		tc filter add dev ${dev}-ifb parent 1:0 protocol ip u32 match u16 0x0800 at -2 match u16 0x$M5$M6 0xffff at -4 match u32 0x$M1$M2$M3$M4 0xffffffff at -8 flowid 1:1$cnt
 	;;
 	*)
 		echo "Usage: $0 <command> [options]"
